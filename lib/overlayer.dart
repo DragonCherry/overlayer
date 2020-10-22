@@ -1,47 +1,32 @@
 library overlayer;
 
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-
-class OverlayablePlaceholder extends StatefulWidget {
-  final Widget placeholder;
-  final Widget overlay;
-  OverlayablePlaceholder({this.placeholder, this.overlay}) : super();
-
-  @override
-  State createState() => _OverlayablePlaceholderState();
-}
-
-class _OverlayablePlaceholderState extends State<OverlayablePlaceholder> {
-  final LayerLink link = LayerLink();
-  OverlayState overlay;
-  OverlayEntry entry;
-
-  @override
-  void initState() {
-    super.initState();
-    overlay = Overlay.of(context);
-    entry = OverlayEntry(builder: (context) {
-      return CompositedTransformFollower(link: link, child: widget.overlay);
-    });
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      overlay.insert(entry);
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return widget.placeholder;
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    entry?.remove();
-  }
-}
+import 'package:flutter/rendering.dart';
 
 extension WidgetOverlayable on Widget {
-  OverlayablePlaceholder overlaid(Widget overlay) {
-    return OverlayablePlaceholder(placeholder: this, overlay: overlay);
+  Widget dimmed(
+      {final Color color = Colors.black,
+      final double alpha = 0.5,
+      final Widget child,
+      final Alignment alignment = Alignment.center}) {
+    return Stack(children: [
+      this,
+      Positioned.fill(
+          child: Opacity(
+              opacity: alpha,
+              child: Container(
+                  color: color,
+                  child: Align(child: child, alignment: alignment))))
+    ]);
+  }
+
+  Widget overlaid(
+      {@required final Widget child,
+      final Alignment alignment = Alignment.center}) {
+    return Stack(children: [
+      Container(child: this),
+      Align(child: child, alignment: alignment)
+    ]);
   }
 }
