@@ -1,3 +1,3 @@
-## [0.5.1]
+## [0.5.2]
 
-* Added detail description.
+* Fixed to use Stack to overlay widget on widget.
