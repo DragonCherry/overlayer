@@ -1,6 +1,6 @@
 name: overlayer
 description: Lightweight utility for put addition overlay widget upon existing widget.
-version: 0.5.1
+version: 0.5.2
 homepage: https://github.com/DragonCherry/overlayer
 
 environment:
